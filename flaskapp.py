@@ -1,6 +1,8 @@
-from flask import Flask
-from flask import render_template
 from flask import Flask, render_template, request, redirect, url_for, flash
+import pymysql
+import creds
+from dbCode import *
+
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key' # this is an artifact for using flash displays; 
@@ -8,7 +10,8 @@ app.secret_key = 'your_secret_key' # this is an artifact for using flash display
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    movies_list = get_list_of_dictionaries()
+    return render_template('home.html', movies = movies_list)
 
 
 if __name__ == '__main__':

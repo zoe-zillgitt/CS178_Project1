@@ -25,3 +25,9 @@ def execute_query(query, args=()):
         return rows
     finally:
         conn.close()
+
+
+def get_list_of_dictionaries():
+
+    query = "SELECT title, popularity, release_date FROM movie LIMIT 10;"
+    return execute_query(query)
