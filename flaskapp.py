@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 import pymysql
 import creds
 from dbCode import *
@@ -16,7 +16,7 @@ def home():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        # Extract form data
+        
         username = request.form['username']
         password = request.form['password']
 
@@ -24,12 +24,13 @@ def login():
         for person in response["Items"]:
             if (person['Username'] == username and person['Password'] == password):
                 
-                flash('User added successfully!', 'success') 
-            else:
+                session['username'] = person['ID']
+                flash('You have logged in!', 'success') 
+                return redirect(url_for('home'))
 
-                flash('Something was wrong and we could not log you in, please try again!', 'warning')
-        # Redirect to home page or another page upon successful submission
+        flash('Something was wrong and we could not log you in, please try again!', 'warning')
         return redirect(url_for('home'))
+        
     else:
         # Render the form page if the request method is GET
         return render_template('login.html')
@@ -52,7 +53,7 @@ def signup():
                 return redirect(url_for('home'))
             else:
                 add_user(username, password, ID, firstname, lastname)
-                flash('User added', 'success')
+                flash('User added, please also login!', 'success')
         # Redirect to home page or another page upon successful submission
         return redirect(url_for('home'))
     else:
