@@ -11,8 +11,9 @@ app.secret_key = 'your_secret_key' # this is an artifact for using flash display
 @app.route('/')
 def home():
     movies_list = get_list_of_dictionaries()
+    voter = print_voters()
     print(movies_list)
-    return render_template('home.html', movies = movies_list)
+    return render_template('home.html', movies = movies_list, voters = voter)
 
 
 if __name__ == '__main__':

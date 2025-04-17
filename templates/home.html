@@ -8,6 +8,7 @@
 <body>
     <div class="container">
         <h2 class="mt-5">Movie List</h2>
+        <h3>{{voters}}</h3>
         <table class="table table-bordered table-striped mt-3">
             <thead class="thead-dark"> <!-- creates a dark background for the table header -->
                 <tr>
@@ -20,7 +21,7 @@
                 {% for movie in movies %}
                 <tr>
                     <td>{{ movie['title'] }}</td>
-                    <td>{{ movie['popularity'] }}</td>
+                    <td>{{ movie['overview'] }}</td>
                     <td>{{ movie['release_date'] }}</td>
                 </tr>
                 {% endfor %}
