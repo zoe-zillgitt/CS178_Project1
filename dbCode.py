@@ -39,9 +39,14 @@ def get_list_of_dictionaries():
     query = "SELECT DISTINCT title, overview, release_date FROM movie, movie_company, production_company, movie_keywords, keyword WHERE movie.movie_id = movie_company.movie_id AND movie_company.company_id = production_company.company_id AND movie.movie_id = movie_keywords.movie_id AND movie_keywords.keyword_id = keyword.keyword_id AND (company_name = 'Walt Disney Animation Studios' OR company_name = 'Walt Disney Feature Animation' OR company_name = 'Walt Disney Pictures' OR company_name = 'Walt Disney Productions') AND keyword_name = 'princess' AND title <> 'Dragonslayer' AND title <> 'The Princess Diaries' AND title <> 'John Carter' AND title <> 'Into the Woods' AND title <> 'Enchanted' ORDER BY release_date ASC;"
     return execute_query_RDS(query)
 
-def get_voters():
+def add_user(username, password, ID, firstname, lastname):
     
     table = get_conn_Dynamo()
-    response = table.scan()
-    for person in response["Items"]:
-        return person
+    table.put_item(
+        Item={
+            'First Name': firstname,
+            'Last Name': lastname,
+            'Username': username,
+            'Password': password,
+            'ID': ID
+        })
