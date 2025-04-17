@@ -50,3 +50,17 @@ def add_user(username, password, ID, firstname, lastname):
             'Password': password,
             'ID': ID
         })
+
+def update_user_profile(ID, movie_name, rating_number):
+
+    table = get_conn_Dynamo()
+    map_as_dictionary = {"Movie": movie_name , "Rating" : rating_number}
+    table.update_item(
+        Key={
+            'ID': ID
+        },
+        UpdateExpression='SET Ratings = list_append(Ratings, :val1)',
+        ExpressionAttributeValues={
+            ':val1':[map_as_dictionary]
+            }
+    )

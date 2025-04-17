@@ -11,7 +11,8 @@ app.secret_key = 'your_secret_key' # this is an artifact for using flash display
 @app.route('/')
 def home():
     movies_list = get_list_of_dictionaries()
-    return render_template('home.html', movies = movies_list)
+    voters_list = (get_conn_Dynamo()).scan()
+    return render_template('home.html', movies = movies_list, voters = voters_list)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -30,7 +31,7 @@ def login():
 
         flash('Something was wrong and we could not log you in, please try again!', 'warning')
         return redirect(url_for('home'))
-        
+
     else:
         # Render the form page if the request method is GET
         return render_template('login.html')
@@ -51,14 +52,27 @@ def signup():
                 
                 flash('This user already exists, please login instead!', 'warning')
                 return redirect(url_for('home'))
-            else:
-                add_user(username, password, ID, firstname, lastname)
-                flash('User added, please also login!', 'success')
+        
+        add_user(username, password, ID, firstname, lastname)
+        flash('User added, please also login!', 'success')
         # Redirect to home page or another page upon successful submission
         return redirect(url_for('home'))
     else:
         # Render the form page if the request method is GET
         return render_template('signup.html')
+
+@app.route('/ratings', methods = ['GET', 'POST'])
+def rate():
+    if request.method == 'POST':
+        user_id = {"Name":session['username']}
+        user_id = int(user_id.get('Name'))
+        print(user_id)
+        selected_movie = request.form['movies']
+        movie_rating = request.form['rating']
+        update_user_profile(user_id, selected_movie, movie_rating)
+        
+    movies_list = get_list_of_dictionaries()
+    return render_template('rating.html', movies = movies_list)
 
 
 if __name__ == '__main__':

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Movie Rating Page</title>
+    <!-- Bootstrap CSS for styling the table -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="container">
+        <h1 class="mt-5">Rate the Movies:</h2>
+    <form action="{{ url_for('rate') }}" method="post">
+        <div class="mb-3">
+            <label for="movie-select" class="form-label">Movie:</label>
+            <select id="movie-select" name="movies" class="form-select">
+                {% for movie in movies %}
+                    <option vlaue="{{ movie }}">{{ movie['title'] }}</option>
+                {% endfor %}
+            </select><br>
+            <label for="rating">Rating (out of 100):</label><br>
+            <input type="number" id="rating" name="rating" required><br>
+        </div>
+    </form>
+<body>
+<html>
