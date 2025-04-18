@@ -5,7 +5,7 @@
     <!-- Bootstrap CSS for styling the table -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-<body>
+<body><!-- code for flash message -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
@@ -20,15 +20,15 @@
     <form action="{{ url_for('rate') }}" method="post">
         <div class="mb-3">
             <label for="movie-select" class="form-label">Movie:</label>
-            <select id="movie-select" name="movies" class="form-select">
+            <select id="movie-select" name="movies" class="form-select"><!-- creates code for drop down menu of movies in list-->
                 {% for movie in movies %}
                     <option vlaue="{{ movie }}">{{ movie['title'] }}</option>
                 {% endfor %}
-            </select><br>
+            </select><br> <!-- box for entering rating-->
             <label for="rating">Rating (out of 100):</label><br>
             <input type="number" id="rating" name="rating" required><br>
         </div>
-
+        <!-- button to submit just for user ease-->
         <button type="submit" class="btn btn-primary">Submit</button>
         <a href="/" class="btn btn-secondary">Home</a>
     </form>
