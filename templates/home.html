@@ -22,24 +22,24 @@
             <a href="/login" class="btn btn-primary">Login</a>
             <a href="/signup" class="btn btn-secondary">Sign Up</a>
             <a href="/ratings" class="btn btn-info">Rate Movies</a>
-            <!-- Display All Users Button -->
-            <a href="/display-users" class="btn btn-info">Display All Users</a>
         </div>
         <table class="table table-bordered table-striped mt-3">
             <thead class="thead-dark"> <!-- creates a dark background for the table header -->
                 <tr>
                     <th>Title</th>
-                    <th>Popularity</th>
+                    <th>Overview</th>
                     <th>Release Date</th>
+                    <th>Current Rating</th>
                 </tr>
             </thead>
-            <tbody> <!-- table body -- loop through all of the users -->
+            <tbody>
                 {% for movie in movies %}
-                <tr>
-                    <td>{{ movie['title'] }}</td>
-                    <td>{{ movie['overview'] }}</td>
-                    <td>{{ movie['release_date'] }}</td>
-                </tr>
+                    <tr>
+                        <td>{{ movie['title'] }}</td>
+                        <td>{{ movie['overview'] }}</td>
+                        <td>{{ movie['release_date'] }}</td>
+                        <td>{{ movie['rating'] }}</td>
+                    </tr>
                 {% endfor %}
             </tbody>
         </table>

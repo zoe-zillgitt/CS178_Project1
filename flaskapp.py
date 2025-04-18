@@ -10,7 +10,15 @@ app.secret_key = 'your_secret_key' # this is an artifact for using flash display
 
 @app.route('/')
 def home():
+
+    ratings_list = calculate_ratings()
     movies_list = get_list_of_dictionaries()
+
+    i = 0
+    for movie in movies_list:
+        movie.update({"rating": ratings_list[i]})
+        i += 1
+
     return render_template('home.html', movies = movies_list)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -67,9 +75,16 @@ def rate():
         try:
             user_id = {"Name":session['username']}
             user_id = int(user_id.get('Name'))
-            print(user_id)
             selected_movie = request.form['movies']
             movie_rating = request.form['rating']
+
+            response = (get_conn_Dynamo().scan())
+            for person in response["Items"]:
+                if person['ID'] == user_id:
+                    for rate in person['Ratings']:
+                        if rate["Movie"] == selected_movie:
+                            flash('You have already rated this movie, please rate another one!', 'warning')
+                            return render_template('rating.html', movies = movies_list)
 
             update_user_profile(user_id, selected_movie, movie_rating)
             flash('Successfully added movie rating', 'success')
