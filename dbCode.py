@@ -48,7 +48,8 @@ def add_user(username, password, ID, firstname, lastname):
             'Last Name': lastname,
             'Username': username,
             'Password': password,
-            'ID': ID
+            'ID': ID,
+            'Ratings': []
         })
 
 def update_user_profile(ID, movie_name, rating_number):

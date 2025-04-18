@@ -11,8 +11,7 @@ app.secret_key = 'your_secret_key' # this is an artifact for using flash display
 @app.route('/')
 def home():
     movies_list = get_list_of_dictionaries()
-    voters_list = (get_conn_Dynamo()).scan()
-    return render_template('home.html', movies = movies_list, voters = voters_list)
+    return render_template('home.html', movies = movies_list)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -63,15 +62,24 @@ def signup():
 
 @app.route('/ratings', methods = ['GET', 'POST'])
 def rate():
-    if request.method == 'POST':
-        user_id = {"Name":session['username']}
-        user_id = int(user_id.get('Name'))
-        print(user_id)
-        selected_movie = request.form['movies']
-        movie_rating = request.form['rating']
-        update_user_profile(user_id, selected_movie, movie_rating)
-        
     movies_list = get_list_of_dictionaries()
+    if request.method == 'POST':
+        try:
+            user_id = {"Name":session['username']}
+            user_id = int(user_id.get('Name'))
+            print(user_id)
+            selected_movie = request.form['movies']
+            movie_rating = request.form['rating']
+
+            update_user_profile(user_id, selected_movie, movie_rating)
+            flash('Successfully added movie rating', 'success')
+            return render_template('rating.html', movies = movies_list)
+
+        except:
+
+            flash('Something went wrong, please try logging in if you have not!', 'warning')
+            return redirect(url_for('home'))
+        
     return render_template('rating.html', movies = movies_list)
 
 
